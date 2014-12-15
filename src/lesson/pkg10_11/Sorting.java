@@ -39,6 +39,7 @@ DefaultListModel model;
         btninsertion = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstnum = new javax.swing.JList();
+        btnrecursive = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +73,13 @@ DefaultListModel model;
 
         jScrollPane1.setViewportView(lstnum);
 
+        btnrecursive.setText("Recursive");
+        btnrecursive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrecursiveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,12 +87,12 @@ DefaultListModel model;
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btninsertion)
-                        .addComponent(btnselection))
-                    .addComponent(btnbubble))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnrecursive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btninsertion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnselection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnbubble, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(69, 69, 69))
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
@@ -100,10 +108,12 @@ DefaultListModel model;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnbubble)
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnselection)
-                        .addGap(40, 40, 40)
-                        .addComponent(btninsertion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btninsertion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnrecursive))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(69, Short.MAX_VALUE))
         );
@@ -190,8 +200,29 @@ public static void insertionSort(int a[]){
   	}//end for
 }//end method
 /////////////////////////////////////////////////////////////////////
+ void quickSort(int[] a,int left, int right){
+    if(left>=right)return;
+    int i=left;
+    int j=right;
+    int pivotValue=a[(left+right)/2];
+    while(i<j){
+        while(a[i]<pivotValue)i++;
+        while(pivotValue<a[j])j--;
+        if(i<=j){
+        int temp=a[i];
+        a[i]=a[j];
+        a[j]=temp;
+        i++;
+        j--;
+    }
+   }
+    quickSort(a,left,j);
+    quickSort(a,i,right);
+}
+
+
     private void btngenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngenerateActionPerformed
-        // TODO add your handling code here:
+        model.clear();
         for(int x=0; x<nums.length;x++){
             nums[x]=(int)((Math.random()*100000)+1);
             model.addElement(nums[x]);
@@ -234,6 +265,18 @@ public static void insertionSort(int a[]){
         }
     }//GEN-LAST:event_btninsertionActionPerformed
 
+    private void btnrecursiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecursiveActionPerformed
+        model.clear();
+        double stime=System.currentTimeMillis();
+        quickSort(nums,0,49999);
+        double etime=System.currentTimeMillis()-stime;
+        JOptionPane.showMessageDialog(this,"Time it took: "+etime/1000);
+        for(int x=0; x<nums.length;x++)
+        {
+            model.addElement(nums[x]);
+        }
+    }//GEN-LAST:event_btnrecursiveActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -273,8 +316,11 @@ public static void insertionSort(int a[]){
     private javax.swing.JButton btnbubble;
     private javax.swing.JButton btngenerate;
     private javax.swing.JButton btninsertion;
+    private javax.swing.JButton btnrecursive;
     private javax.swing.JButton btnselection;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList lstnum;
     // End of variables declaration//GEN-END:variables
+
+    
 }
